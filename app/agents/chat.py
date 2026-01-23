@@ -2,8 +2,11 @@ import operator
 
 from langchain.chat_models import init_chat_model
 from langchain.messages import AnyMessage, SystemMessage
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 from typing_extensions import Annotated, TypedDict
+
+checkpointer = InMemorySaver()
 
 model = init_chat_model("openai:gpt-5-nano", temperature=0)
 
@@ -15,6 +18,7 @@ class MessagesState(TypedDict):
 
 def llm_call(state: dict):
     """LLM call node. Calls the language model and returns the response."""
+    print("MESSAGES", state["messages"])
 
     return {
         "messages": [
@@ -39,4 +43,4 @@ chat_agent_builder.add_edge(START, "llm_call")
 chat_agent_builder.add_edge("llm_call", END)
 
 
-chat_agent = chat_agent_builder.compile()
+chat_agent = chat_agent_builder.compile(checkpointer=checkpointer)
