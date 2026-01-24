@@ -4,7 +4,7 @@ import httpx
 from fastapi import BackgroundTasks, Query, Request, Response
 from pydantic import BaseModel
 
-from app.agents.chat import chat_agent
+from app.agents.team import chatbot_agent
 
 timeout_config = httpx.Timeout(60.0, connect=10.0)
 client = httpx.AsyncClient(timeout=timeout_config)
@@ -68,7 +68,7 @@ async def run_agent_and_send_reply(text_body, from_number, message_id):
         await mark_message_as_read(message_id)
 
         # 1. Wait for the slow LLM
-        response = await chat_agent.ainvoke(
+        response = await chatbot_agent.ainvoke(
             {
                 "messages": [{"role": "user", "content": text_body}],
                 "user": {"phone_number": from_number},
