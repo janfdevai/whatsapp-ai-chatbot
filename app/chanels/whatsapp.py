@@ -69,7 +69,10 @@ async def run_agent_and_send_reply(text_body, from_number, message_id):
 
         # 1. Wait for the slow LLM
         response = await chat_agent.ainvoke(
-            {"messages": [{"role": "user", "content": text_body}]},
+            {
+                "messages": [{"role": "user", "content": text_body}],
+                "user_phone_number": from_number,
+            },
             {"configurable": {"thread_id": from_number}},
         )
         answer = response["messages"][-1].content
