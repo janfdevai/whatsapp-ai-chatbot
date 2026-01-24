@@ -4,12 +4,6 @@ from langgraph.types import Command
 
 
 @tool
-def get_weather(city: str) -> str:
-    """Get weather for a given city."""
-    return f"It's always sunny in {city}!"
-
-
-@tool
 def get_user_phone_number(runtime: ToolRuntime) -> str:
     """Get the user's phone number."""
 
@@ -38,4 +32,4 @@ def update_user_name(user_name: str, runtime: ToolRuntime) -> Command:
     )
 
 
-tools = [get_weather, get_user_phone_number, get_user_name, update_user_name]
+tools = [get_user_phone_number, get_user_name, update_user_name]
