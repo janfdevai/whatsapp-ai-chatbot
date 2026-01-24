@@ -7,7 +7,7 @@ A production-ready, AI-powered WhatsApp chatbot built with **FastAPI**, **LangGr
 ## 🚀 Key Features
 
 - **Asynchronous Architecture**: Leverages FastAPI's `BackgroundTasks` to handle incoming webhooks instantly, avoiding Meta's strict 3-second timeout.
-- **Stateful AI Agent**: Uses **LangGraph** to manage conversation state and memory across multiple messages.
+- **Stateful AI Agent**: Uses **LangGraph** to manage conversation state, including user profiles (name, phone number) and message history.
 - **Meta Webhook Integration**: Full support for WhatsApp Cloud API webhooks, including automated verification and message status updates (marking as read).
 - **LangSmith Tracing**: Integrated observability for debugging and monitoring agent performance.
 - **Easy Deployment**: Uses `uv` for lightning-fast dependency management and environment setup.
@@ -26,14 +26,20 @@ A production-ready, AI-powered WhatsApp chatbot built with **FastAPI**, **LangGr
 ```text
 whatsapp-ai-chatbot/
 ├── app/
-│   ├── agents/          # AI Agent logic and graph definitions
-│   │   └── chat.py      # Main LangGraph agent
-│   ├── chanels/         # Communication channels
-│   │   └── whatsapp.py  # WhatsApp API integration and webhook logic
-│   └── main.py          # FastAPI application entry point
-├── .env                 # Environment variables
-├── pyproject.toml       # Project dependencies
-└── README.md            # You are here!
+│   ├── agents/              # AI Agent logic and graph definitions
+│   │   ├── chatbot_agent/   # Modular chatbot implementation
+│   │   │   ├── graph.py     # LangGraph workflow definition
+│   │   │   ├── nodes.py     # Graph nodes (LLM calls, tools)
+│   │   │   ├── state.py     # State schemas (Messages, UserProfile)
+│   │   │   ├── tools.py     # Custom tools for the agent
+│   │   │   └── utils.py     # Helper functions
+│   │   └── team.py          # Agent compilation and memory setup
+│   ├── chanels/             # Communication channels (e.g., WhatsApp)
+│   │   └── whatsapp.py      # Meta API integration and webhook logic
+│   └── main.py              # FastAPI application entry point
+├── .env                     # Environment variables
+├── pyproject.toml           # Project dependencies
+└── README.md                # You are here!
 ```
 
 ---
@@ -75,9 +81,6 @@ OPENAI_API_KEY=your_openai_api_key
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=your_langsmith_api_key
 LANGSMITH_PROJECT=whatsapp-ai-chatbot
-
-# Optional: Tools
-OPEN_WEATHER_API_KEY=your_weather_api_key
 ```
 
 ### 4. Run the Application
