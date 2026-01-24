@@ -71,7 +71,7 @@ async def run_agent_and_send_reply(text_body, from_number, message_id):
         response = await chat_agent.ainvoke(
             {
                 "messages": [{"role": "user", "content": text_body}],
-                "user_phone_number": from_number,
+                "user": {"phone_number": from_number},
             },
             {"configurable": {"thread_id": from_number}},
         )
